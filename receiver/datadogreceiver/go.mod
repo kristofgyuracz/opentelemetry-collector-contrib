@@ -6,7 +6,8 @@ require (
 	github.com/DataDog/datadog-agent/pkg/proto v0.50.2
 	github.com/open-telemetry/opentelemetry-collector-contrib/internal/sharedcomponent v0.92.0
 	github.com/stretchr/testify v1.8.4
-	github.com/vmihailenco/msgpack/v4 v4.3.13
+	github.com/vmihailenco/msgpack/v4 v4.3.12
+	github.com/vmihailenco/msgpack/v5 v5.4.1
 	go.opentelemetry.io/collector/component v0.92.1-0.20240117180253-4371e14440ee
 	go.opentelemetry.io/collector/config/confighttp v0.92.1-0.20240117180253-4371e14440ee
 	go.opentelemetry.io/collector/consumer v0.92.1-0.20240117180253-4371e14440ee
