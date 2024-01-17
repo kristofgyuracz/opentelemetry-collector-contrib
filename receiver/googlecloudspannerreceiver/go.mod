@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go/spanner v1.55.0
 	github.com/ReneKroon/ttlcache/v2 v2.11.0
 	github.com/mitchellh/hashstructure v1.1.0
+	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/stretchr/testify v1.8.4
 	go.opentelemetry.io/collector/component v0.92.1-0.20240117180253-4371e14440ee
 	go.opentelemetry.io/collector/confmap v0.92.1-0.20240117180253-4371e14440ee
