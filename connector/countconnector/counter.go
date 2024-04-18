@@ -73,6 +73,13 @@ func (c *counter[K]) update(ctx context.Context, attrs pcommon.Map, resourceAttr
 				countAttrs.PutStr(resAttr.Key, resAttr.DefaultValue)
 			}
 		}
+		for _, resAttr := range md.resourceAttrs {
+			if resAttrVal, ok := resourceAttrs.Get(resAttr.Key); ok {
+				countAttrs.PutStr(resAttr.Key, resAttrVal.Str())
+			} else if resAttr.DefaultValue != "" {
+				countAttrs.PutStr(resAttr.Key, resAttr.DefaultValue)
+			}
+		}
 
 		// Missing necessary attributes to be counted
 		if countAttrs.Len() != len(md.attrs) {
