@@ -1,0 +1,106 @@
+resourceMetrics:
+  - resource:
+      attributes:
+        - key: resource.required
+          value:
+            stringValue: notfoo
+    scopeMetrics:
+      - metrics:
+          - description: Log count by attribute
+            name: log.count.by_attr
+            sum:
+              aggregationTemporality: 1
+              dataPoints:
+                - asInt: "2"
+                  attributes:
+                    - key: log.required
+                      value:
+                        stringValue: foo
+                    - key: resource.required
+                      value:
+                        stringValue: notfoo
+                  timeUnixNano: "1000000"
+                - asInt: "1"
+                  attributes:
+                    - key: log.required
+                      value:
+                        stringValue: notfoo
+                    - key: resource.required
+                      value:
+                        stringValue: notfoo
+                  timeUnixNano: "1000000"
+              isMonotonic: true
+        scope:
+          name: otelcol/countconnector
+  - resource:
+      attributes:
+        - key: resource.optional
+          value:
+            stringValue: bar
+        - key: resource.required
+          value:
+            stringValue: foo
+    scopeMetrics:
+      - metrics:
+          - description: Log count by attribute
+            name: log.count.by_attr
+            sum:
+              aggregationTemporality: 1
+              dataPoints:
+                - asInt: "2"
+                  attributes:
+                    - key: log.required
+                      value:
+                        stringValue: foo
+                    - key: resource.required
+                      value:
+                        stringValue: foo
+                  timeUnixNano: "1000000"
+                - asInt: "1"
+                  attributes:
+                    - key: log.required
+                      value:
+                        stringValue: notfoo
+                    - key: resource.required
+                      value:
+                        stringValue: foo
+                  timeUnixNano: "1000000"
+              isMonotonic: true
+        scope:
+          name: otelcol/countconnector
+  - resource:
+      attributes:
+        - key: resource.optional
+          value:
+            stringValue: notbar
+        - key: resource.required
+          value:
+            stringValue: foo
+    scopeMetrics:
+      - metrics:
+          - description: Log count by attribute
+            name: log.count.by_attr
+            sum:
+              aggregationTemporality: 1
+              dataPoints:
+                - asInt: "2"
+                  attributes:
+                    - key: log.required
+                      value:
+                        stringValue: foo
+                    - key: resource.required
+                      value:
+                        stringValue: foo
+                  timeUnixNano: "1000000"
+                - asInt: "1"
+                  attributes:
+                    - key: log.required
+                      value:
+                        stringValue: notfoo
+                    - key: resource.required
+                      value:
+                        stringValue: foo
+                  timeUnixNano: "1000000"
+              isMonotonic: true
+        scope:
+          name: otelcol/countconnector

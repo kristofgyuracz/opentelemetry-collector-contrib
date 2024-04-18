@@ -35,7 +35,7 @@ type attrCounter struct {
 	count uint64
 }
 
-func (c *counter[K]) update(ctx context.Context, attrs pcommon.Map, tCtx K) error {
+func (c *counter[K]) update(ctx context.Context, attrs pcommon.Map, resourceAttrs pcommon.Map, tCtx K) error {
 	var multiError error
 	for name, md := range c.metricDefs {
 		countAttrs := pcommon.NewMap()
@@ -66,11 +66,39 @@ func (c *counter[K]) update(ctx context.Context, attrs pcommon.Map, tCtx K) erro
 				}
 			}
 		}
+		for _, resAttr := range md.resourceAttrs {
+
+			if resAttrVal, ok := resourceAttrs.Get(resAttr.Key); ok {
+				switch typeresAttr := resAttrVal.Type(); typeresAttr {
+				case pcommon.ValueTypeInt:
+					countAttrs.PutInt(resAttr.Key, resAttrVal.Int())
+				case pcommon.ValueTypeDouble:
+					countAttrs.PutDouble(resAttr.Key, resAttrVal.Double())
+				default:
+					countAttrs.PutStr(resAttr.Key, resAttrVal.Str())
+				}
+			} else if resAttr.DefaultValue != nil {
+				switch v := resAttr.DefaultValue.(type) {
+				case string:
+					if v != "" {
+						countAttrs.PutStr(resAttr.Key, v)
+					}
+				case int:
+					if v != 0 {
+						countAttrs.PutInt(resAttr.Key, int64(v))
+					}
+				case float64:
+					if v != 0 {
+						countAttrs.PutDouble(resAttr.Key, float64(v))
+					}
+				}
+			}
+		}
 
 		// Missing necessary attributes to be counted
-		if countAttrs.Len() != len(md.attrs) {
-			continue
-		}
+		// if countAttrs.Len() != len(md.attrs)+len(md.resourceAttrs) {
+		// 	continue
+		// }
 
 		// No conditions, so match all.
 		if md.condition == nil {

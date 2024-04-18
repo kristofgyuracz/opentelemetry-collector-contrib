@@ -138,8 +138,9 @@ func createLogsToMetrics(
 	metricDefs := make(map[string]metricDef[ottllog.TransformContext], len(c.Logs))
 	for name, info := range c.Logs {
 		md := metricDef[ottllog.TransformContext]{
-			desc:  info.Description,
-			attrs: info.Attributes,
+			desc:          info.Description,
+			attrs:         info.Attributes,
+			resourceAttrs: info.ResourceAttributes,
 		}
 		if len(info.Conditions) > 0 {
 			// Error checked in Config.Validate()
@@ -156,7 +157,8 @@ func createLogsToMetrics(
 }
 
 type metricDef[K any] struct {
-	condition expr.BoolExpr[K]
-	desc      string
-	attrs     []AttributeConfig
+	condition     expr.BoolExpr[K]
+	desc          string
+	attrs         []AttributeConfig
+	resourceAttrs []AttributeConfig
 }
