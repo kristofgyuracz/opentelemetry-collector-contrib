@@ -41,9 +41,10 @@ type Config struct {
 
 // MetricInfo for a data type
 type MetricInfo struct {
-	Description string            `mapstructure:"description"`
-	Conditions  []string          `mapstructure:"conditions"`
-	Attributes  []AttributeConfig `mapstructure:"attributes"`
+	Description        string            `mapstructure:"description"`
+	Conditions         []string          `mapstructure:"conditions"`
+	Attributes         []AttributeConfig `mapstructure:"attributes"`
+	ResourceAttributes []AttributeConfig `mapstructure:"resource_attributes"`
 }
 
 type AttributeConfig struct {
@@ -114,6 +115,12 @@ func (c *Config) Validate() error {
 func (i *MetricInfo) validateAttributes() error {
 	for _, attr := range i.Attributes {
 		if attr.Key == "" {
+			return fmt.Errorf("attribute key missing")
+		}
+	}
+
+	for _, resAttr := range i.ResourceAttributes {
+		if resAttr.Key == "" {
 			return fmt.Errorf("attribute key missing")
 		}
 	}
