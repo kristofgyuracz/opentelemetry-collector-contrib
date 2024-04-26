@@ -656,6 +656,26 @@ func TestLogsToMetrics(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "resource_attribute",
+			cfg: &Config{
+				Logs: map[string]MetricInfo{
+					"log.count.by_attr": {
+						Description: "Log count by attribute",
+						Attributes: []AttributeConfig{
+							{
+								Key: "log.required",
+							},
+						},
+						ResourceAttributes: []AttributeConfig{
+							{
+								Key: "resource.required",
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 
 	for _, tc := range testCases {
