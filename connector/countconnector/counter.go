@@ -67,17 +67,31 @@ func (c *counter[K]) update(ctx context.Context, attrs pcommon.Map, resourceAttr
 			}
 		}
 		for _, resAttr := range md.resourceAttrs {
+
 			if resAttrVal, ok := resourceAttrs.Get(resAttr.Key); ok {
-				countAttrs.PutStr(resAttr.Key, resAttrVal.Str())
-			} else if resAttr.DefaultValue != "" {
-				countAttrs.PutStr(resAttr.Key, resAttr.DefaultValue)
-			}
-		}
-		for _, resAttr := range md.resourceAttrs {
-			if resAttrVal, ok := resourceAttrs.Get(resAttr.Key); ok {
-				countAttrs.PutStr(resAttr.Key, resAttrVal.Str())
-			} else if resAttr.DefaultValue != "" {
-				countAttrs.PutStr(resAttr.Key, resAttr.DefaultValue)
+				switch typeresAttr := resAttrVal.Type(); typeresAttr {
+				case pcommon.ValueTypeInt:
+					countAttrs.PutInt(resAttr.Key, resAttrVal.Int())
+				case pcommon.ValueTypeDouble:
+					countAttrs.PutDouble(resAttr.Key, resAttrVal.Double())
+				default:
+					countAttrs.PutStr(resAttr.Key, resAttrVal.Str())
+				}
+			} else if resAttr.DefaultValue != nil {
+				switch v := resAttr.DefaultValue.(type) {
+				case string:
+					if v != "" {
+						countAttrs.PutStr(resAttr.Key, v)
+					}
+				case int:
+					if v != 0 {
+						countAttrs.PutInt(resAttr.Key, int64(v))
+					}
+				case float64:
+					if v != 0 {
+						countAttrs.PutDouble(resAttr.Key, float64(v))
+					}
+				}
 			}
 		}
 
